@@ -1,0 +1,92 @@
+_schema-version: "3.2"
+ID: ztableroadmin
+version: 0.0.1
+modules:
+- name: ztableroadmin-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ztableroadmin-destination-service
+    parameters:
+      content-target: true
+  - name: ztableroadmin_html_repo_host
+    parameters:
+      service-key:
+        name: ztableroadmin_html_repo_host-key
+  - name: uaa_ztableroadmin
+    parameters:
+      service-key:
+        name: uaa_ztableroadmin-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ztableroadmin_ztableroadmin_html_repo_host
+          ServiceInstanceName: ztableroadmin-html5-app-host-service
+          ServiceKeyName: ztableroadmin_html_repo_host-key
+          sap.cloud.service: ztableroadmin
+        - Authentication: OAuth2UserTokenExchange
+          Name: ztableroadmin_uaa_ztableroadmin
+          ServiceInstanceName: ztableroadmin-xsuaa-service
+          ServiceKeyName: uaa_ztableroadmin-key
+          sap.cloud.service: ztableroadmin
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: ztableroadmin-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ztableroadmin_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - nebulacomztablero.zip
+      name: nebulacomztablero
+      target-path: resources/
+- name: nebulacomztablero
+  type: html5
+  path: ztablero
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ztableroadmin-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ztableroadmin-destination-service
+    service-plan: lite
+- name: ztableroadmin_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ztableroadmin-html5-app-host-service
+    service-plan: app-host
+- name: uaa_ztableroadmin
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ztableroadmin-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

@@ -78,12 +78,18 @@
             },
             "routes": [
                 {
-                    "name": "RouteMain",
-                    "pattern": ":?query:",
-                    "target": [
-                        "TargetMain"
-                    ]
+                    "pattern": "",
+                    "name": "Main",
+                    "view": "Main",
+                    "target": "TargetMain"
+                },
+                {
+                    "pattern": "ReferenciaMap/:latix:/:longx:/:idMovim:/:stado:/",
+                    "name": "ReferenciaMap",
+                    "view":"ReferenciaMap",
+                    "target":"TargetReferenciaMap"
                 }
+
             ],
             "targets": {
                 "TargetMain": {
@@ -91,7 +97,16 @@
                     "transition": "slide",
                     "clearControlAggregation": false,
                     "viewId": "Main",
-                    "viewName": "Main"
+                    "viewName": "Main",
+                    "viewLevel": 1
+                },
+                "TargetReferenciaMap": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ReferenciaMap",
+                    "viewName": "ReferenciaMap",
+                    "viewLevel": 2
                 }
             }
         },

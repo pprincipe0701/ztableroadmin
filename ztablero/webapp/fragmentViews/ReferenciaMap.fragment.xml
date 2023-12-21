@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns:vbm="sap.ui.vbm" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+	<Label id="expandedLabel" text="Comprueba ubicación" />
+       <VBox id="mapVbox">
+              <vbm:GeoMap id="vbi" width="100%" />
+        </VBox>
+
+</core:FragmentDefinition>

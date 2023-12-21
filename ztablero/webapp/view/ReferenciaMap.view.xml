@@ -1,0 +1,74 @@
+<mvc:View controllerName="nebula.com.ztablero.controller.ReferenciaMap" height="100%"
+xmlns:mvc="sap.ui.core.mvc" xmlns:vbm="sap.ui.vbm" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns="sap.m">
+
+<uxap:ObjectPageLayout id="_IDGenObjectPageLayout1" showTitleInHeaderContent="false" showHeaderContent="true" showAnchorBar="true" showFooter="true" subSectionLayout="TitleOnTop">
+    <uxap:headerTitle>
+        <uxap:ObjectPageHeader id="objectPageHeader">
+            <uxap:actions>
+                        <FlexBox id="idFlexBox" alignItems="Start" justifyContent="Start">
+                            <items>
+                                <Button id="_IDGenButton2" text="Cancelar" type="Reject" icon="sap-icon://nav-back" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onVolver" />
+                                
+                                <Switch id="swValidacion" state="{path: 'modelMovDiario>status', formatter: '.convertToNumber'}" change="onSwitchChange" />
+                            </items>
+                        </FlexBox>
+            </uxap:actions>
+
+        </uxap:ObjectPageHeader>
+    </uxap:headerTitle>
+
+    <uxap:sections>
+        <uxap:ObjectPageSection id="mapSection1" title="Ubicacion de Referencia">
+            <uxap:ObjectPageSubSection id="viewReg">
+                <VBox id="VboxDetail">
+                    <form:SimpleForm id="SimpleFormDisplay354"
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    title=""
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="4"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false" >
+                    <form:content>
+                        <Label id="_IDGenLabel1pp" text="Dirección" design="Bold"/>
+                        <Text id="nameTextpp" text="{modelView>/direccion}" />
+                        <Label id="_IDGenLabel2pp" text="Razón Social" design="Bold"/>
+                        <Text id="_IDGenText1pp" text="{modelView>/razonSocial}" />
+                        <Label id="_IDGenLabel3pp" text="Horario Atención" design="Bold"/>
+                        <Text id="_IDGenText2pp" text="{modelView>/horarioApertura}" />
+                        <Label id="_IDGenLabel4pp" text="Rubro" design="Bold"/>
+                        <Text id="countryTextpp" text="{modelView>/descripcionRubro}" />
+                        <Label id="_IDGenLabel4ppx" text="Afluencia" design="Bold"/>
+                        <Text id="countryTextppx" text="{modelView>/descipcionAfluencia}" />
+                        <Label id="_IDGenLabel4ppxy" text="Temporada" design="Bold"/>
+                        <Text id="countryTextppxy" text="{modelView>/descripcionTemporada}" />
+                        <Label id="_IDGenLabel4ppxyz" text="Nivel Competencia" design="Bold"/>
+                        <Text id="countryTextppxyz" text="{modelView>/descripcionCompetencia}" />
+    
+                    </form:content>
+                    </form:SimpleForm>
+                </VBox>
+            </uxap:ObjectPageSubSection>
+    </uxap:ObjectPageSection>
+    </uxap:sections>   
+
+    <uxap:sections>
+        <uxap:ObjectPageSection id="mapSection" title="Ubicacion de Referencia">
+            <uxap:ObjectPageSubSection id="mapSubSection">
+                <VBox id="mapVbox">
+                    <vbm:GeoMap id="vbi" width="100%" />
+                </VBox>
+            </uxap:ObjectPageSubSection>
+        </uxap:ObjectPageSection>
+    </uxap:sections>
+</uxap:ObjectPageLayout>
+</mvc:View>

@@ -46,9 +46,23 @@ modules:
       - nebulacomztablero.zip
       name: nebulacomztablero
       target-path: resources/
+    - artifacts:
+      - nebulacomzreport.zip
+      name: nebulacomzreport
+      target-path: resources/
 - name: nebulacomztablero
   type: html5
   path: ztablero
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: nebulacomzreport
+  type: html5
+  path: zreport
   build-parameters:
     build-result: dist
     builder: custom

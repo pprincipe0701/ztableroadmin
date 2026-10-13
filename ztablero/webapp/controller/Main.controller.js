@@ -69,7 +69,7 @@ sap.ui.define([
                   var oJsonModelMovDiarios = new sap.ui.model.json.JSONModel();
 
                   //llAMAR AL SERVICIO QUE LISTA LOS ESTABLECIMIENTOS
-                  var url_data = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro le " + fechaInicio + " and fechaRegistro ge " + fechaFinal;
+                  var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro le " + fechaInicio + " and fechaRegistro ge " + fechaFinal;
                   var aData = jQuery
                     .ajax({
                       method: "GET",
@@ -124,17 +124,17 @@ sap.ui.define([
         var fechaFinal = dateFormat.format(selectedDateFinal);
 
             if (selectedKeyzona) {
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
               
             }else if (idDistrito) {
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
               
             }else if(selectedKeyusuario){
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idUsuario eq " + selectedKeyusuario + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idUsuario eq " + selectedKeyusuario + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
               
             } else {
               if (selectedDateIni && selectedDateFinal) {
-                url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+                url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
             
                 };
             }
@@ -167,17 +167,17 @@ sap.ui.define([
         var fechaFinal = dateFormat.format(selectedDateFinal);
 
             if (selectedKeyzona) {
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
               
             }else if (idDistrito) {
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
               
             }else if(selectedKeyusuario){
-              url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idUsuario eq " + selectedKeyusuario + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
+              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idUsuario eq " + selectedKeyusuario + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
               
             } else {
               if (selectedDateIni && selectedDateFinal) {
-                url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
+                url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal + " and status eq '" + idStatus + "'";
             
                 };
             }
@@ -242,7 +242,7 @@ sap.ui.define([
 
 
         var resultAll = [];
-        var url_data = './backend_mov/service/zadmin/MasterData'
+        var url_data = './backend_mov/odata/v4/service/zadmin/MasterData'
 
         var aData = jQuery
           .ajax({
@@ -280,7 +280,7 @@ sap.ui.define([
         objAux.listaUsuarios = [];
 
         var resultAll = [];
-        var url_data = './backend_mov/service/zadmin/MasterUsuarios'
+        var url_data = './backend_mov/odata/v4/service/zadmin/MasterUsuarios'
 
         var aData = jQuery
           .ajax({
@@ -329,9 +329,9 @@ sap.ui.define([
   
           var fechaInicio = dateFormat.format(selectedDateIni);
           var fechaFinal = dateFormat.format(selectedDateFinal);
-          var url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+          var url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
         }
-        var url_data = "./backend_mov/service/zadmin/MasterZonas?$filter=masterDistrito_ID eq " + idDistrito ;
+        var url_data = "./backend_mov/odata/v4/service/zadmin/MasterZonas?$filter=masterDistrito_ID eq " + idDistrito ;
         var aData = jQuery
           .ajax({
             method: "GET",
@@ -375,7 +375,7 @@ sap.ui.define([
         var fechaInicio = dateFormat.format(selectedDateIni);
         var fechaFinal = dateFormat.format(selectedDateFinal);
         if(idDistrito){
-          var url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + " and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
+          var url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + " and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
           this.cargaDatosaModelo(url_data1);
         }else{
           MessageBox.error("Debe seleccionar un distrito");
@@ -420,7 +420,7 @@ sap.ui.define([
           auxSw = "0"
         };
 
-        var url_data = "./backend_mov/service/zbusiness/MovimientosDiarios/" + iDMov
+        var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientosDiarios/" + iDMov
         
         objAux.status = auxSw;
         var jsonObject = JSON.stringify(objAux);

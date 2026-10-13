@@ -34,7 +34,7 @@ sap.ui.define([
               },
             onVerDetalle:function(){
               // https://b3ceeb8btrial-dev-zdatastreet-business-srv.cfapps.us10-001.hana.ondemand.com/service/zbusiness/MovimientoDiarioCustom
-              var url_data1 = "./backend_mov/service/zbusiness/MovimientoDiarioCustom?$filter=idMovimientoDiario eq " + idMovim;
+              var url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idMovimientoDiario eq " + idMovim;
               this.cargaDatosaModelo(url_data1);
 
               },
@@ -189,7 +189,7 @@ sap.ui.define([
                   auxSw = "0"
                 };
         
-                var url_data = "./backend_mov/service/zbusiness/MovimientosDiarios/" + idMovim
+                var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientosDiarios/" + idMovim
                 
                 objAux.status = auxSw;
                 var jsonObject = JSON.stringify(objAux);

@@ -7,9 +7,10 @@ xmlns:mvc="sap.ui.core.mvc" xmlns:vbm="sap.ui.vbm" xmlns:l="sap.ui.layout" xmlns
             <uxap:actions>
                         <FlexBox id="idFlexBox" alignItems="Start" justifyContent="Start">
                             <items>
-                                <Button id="_IDGenButton2" text="Cancelar" type="Reject" icon="sap-icon://nav-back" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onVolver" />
-                                
-                                <Switch id="swValidacion" state="{path: 'modelMovDiario>status', formatter: '.convertToNumber'}" change="onSwitchChange" />
+                                <Button id="_IDGenButton2" class="sapUiTinyMarginEnd" text="Volver" type="Back" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onVolver" />
+                                <Button id="_IDGenButton3" class="sapUiTinyMarginEnd" text="Validar" type="Emphasized" icon="sap-icon://validate" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onSwitchChange" />
+                                <Button id="_IDGenButton4" class="sapUiTinyMarginEnd" text="Observar" type="Reject" icon="sap-icon://status-error" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="ObservarReg" />
+                                <!--<Switch id="swValidacion" state="{path: 'modelMovDiario>status', formatter: '.convertToNumber'}" change="onSwitchChange" />-->
                             </items>
                         </FlexBox>
             </uxap:actions>
@@ -53,7 +54,17 @@ xmlns:mvc="sap.ui.core.mvc" xmlns:vbm="sap.ui.vbm" xmlns:l="sap.ui.layout" xmlns
                         <Text id="countryTextppxy" text="{modelView>/descripcionTemporada}" />
                         <Label id="_IDGenLabel4ppxyz" text="Nivel Competencia" design="Bold"/>
                         <Text id="countryTextppxyz" text="{modelView>/descripcionCompetencia}" />
-    
+                        <Label id="_IDGenLabel5ppxyz" text="Fecha de Registro" design="Bold"/>
+                        <Text id="txtfechRegistroD" text="{modelView>/fechaRegistro}" />
+                        <Label id="_IDGenLabel6ppxyz" text="Zona" design="Bold"/>
+                        <Text id="txtdescripcionZonaD" text="{modelView>/descripcionZona}" />
+                        <Label id="_IDGenLabel8ppxyz" text="Tipo de Público" design="Bold"/>
+                        <Text id="txtdescripcionTPublicoD" text="{modelView>/descripcionTPublico}" />
+                        <Label id="_IDGenLabel9ppxyz" text="Distrito" design="Bold"/>
+                        <Text id="txtdescripcionDistritoD" text="{modelView>/descripcionDistrito}" />
+                        <Label id="_IDGenLabel10ppxyz" text="Estación" design="Bold"/>
+                        <Text id="txtdecripcionEstacionD" text="{modelView>/decripcionEstacion}" />
+         
                     </form:content>
                     </form:SimpleForm>
                 </VBox>

@@ -19,14 +19,26 @@ sap.ui.define([
                 var oArguments = oEvent.getParameter("arguments");
                 //this.getCurrentPositionInitial();
                 var oView = this.getView();
-                var oSwitch = this.getView().byId("swValidacion");
-                var auxSw;
-                if (oArguments.stado === "1"){
-                  auxSw = true
-                }else{
-                  auxSw = false
+                //var oSwitch = this.getView().byId("swValidacion");
+                var oButtonValidar = this.byId("_IDGenButton3");
+                var oButtonObservar = this.byId("_IDGenButton4");       
+
+                switch(oArguments.stado){
+                  case "0":
+                          oButtonValidar.setVisible(true);
+                          oButtonObservar.setVisible(true);
+                          break;
+                  case "1":
+                          oButtonValidar.setVisible(false);
+                          oButtonObservar.setVisible(true);
+                          break;
+                  case "2":
+                          oButtonValidar.setVisible(false);
+                          oButtonObservar.setVisible(false);
+                          break;      
                 };
-                oSwitch.setState(auxSw);
+
+                //oSwitch.setState(auxSw);
                 idMovim = oArguments.idMovim;
                 stado = oArguments.stado;
                 this.changePositionLocation(oArguments.latix,oArguments.longx);
@@ -173,54 +185,151 @@ sap.ui.define([
                 //Fin - geomap
         
               },
+              ObservarReg: function(){
+                var that = this;
+                var objAux = {};
+                 var oTextArea = new sap.m.TextArea({
+                    width: "98%",
+                    rows: 5,
+                    maxLength: 1000,
+                    placeholder: "Ingrese el motivo de la observación..."
+                });
+                var oDialog = new sap.m.Dialog({
+                    title: "Registrar observación",
+                    contentWidth: "450px",
+                    content: [
+                        new sap.m.Label({
+                            //text: "Observación:",
+                            labelFor: oTextArea
+                        }),
+                        oTextArea
+                    ],
+                    beginButton: new sap.m.Button({
+                        text: "Guardar",
+                        type: "Emphasized",
+                        press: function () {
+                            var sObservacion = oTextArea.getValue().trim();
+                            if (!sObservacion) {
+                                sap.m.MessageBox.warning(
+                                    "Debe ingresar una observación."
+                                );
+                                return;
+                            }
+                            
+                            //console.log("Observación:", sObservacion);
+                            oDialog.close();
+                                var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientosDiarios/" + idMovim
+                                objAux.observacionGeneral = sObservacion;
+                                objAux.status = "2";
+                                var jsonObject = JSON.stringify(objAux);
+                                var self = that;
+                                var aData2 = jQuery.ajax({
+                                  type: "PATCH",
+                                  cache: false,
+                                  contentType: "application/json",
+                                  url: url_data,
+                                  dataType: "json",
+                                  async: false,
+                                  data: jsonObject,
+                                  success: function (data, textStatus, jqXHR) {
+                                    //oGlobalBusyDialog.close();
+                                     /*sap.m.MessageToast.show(
+                                        "Observación ingresada correctamente."
+                                      );
+                                      */
+                                    MessageBox.information("Se ha guardado la observacion correctamente", {
+                                      actions: ["Aceptar"],
+                                      emphasizedAction: "Aceptar",
+                                      onClose: function (sAction) {
+                                        //MessageToast.show("Action selected: " + sAction);
+                                        self.onVolver();
+                                      }
+                                    });
+                                  },
+                                  error: function (xhr, readyState) {
+                                    //oGlobalBusyDialog.close();
+                                    MessageBox.error("no se pudo realizar la validacion de registro");
+                                  },
+                                });
+                        }
+                    }),
+                    endButton: new sap.m.Button({
+                        text: "Cancelar",
+                        press: function () {
+                            oDialog.close();
+                        }
+                    }),
+                    afterClose: function () {
+                        oDialog.destroy();
+                    }
+                });
+                oTextArea.addStyleClass("sapUiSmallMarginBottom");
+                this.getView().addDependent(oDialog);
+                oDialog.open();
+              },
               onSwitchChange: function(oEvent){
                 //https://b3ceeb8btrial-dev-zdatastreet-business-srv.cfapps.us10-001.hana.ondemand.com/service/zbusiness/MovimientosDiarios/{IDMOV}
 
                 //stado = argumentos.status;
                 var oView = this.getView();
-                var oSwitch = this.getView().byId("swValidacion");
-                var valSw = oSwitch.getState();
+                //var oSwitch = this.getView().byId("swValidacion");
+                //var valSw = oSwitch.getState();
+                /*
                 
-                var objAux = {};
                 var auxSw;
                 if (valSw === true){
                   auxSw = "1"
                 }else{
                   auxSw = "0"
                 };
-        
-                var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientosDiarios/" + idMovim
-                
-                objAux.status = auxSw;
-                var jsonObject = JSON.stringify(objAux);
-                var self = this;
-                var aData2 = jQuery.ajax({
-                  type: "PATCH",
-                  cache: false,
-                  contentType: "application/json",
-                  url: url_data,
-                  dataType: "json",
-                  async: false,
-                  data: jsonObject,
-                  success: function (data, textStatus, jqXHR) {
-                    //oGlobalBusyDialog.close();
-                    MessageBox.information("Se ha validado correctamente.", {
-                      actions: ["Aceptar"],
-                      emphasizedAction: "Aceptar",
-                      onClose: function (sAction) {
-                        //MessageToast.show("Action selected: " + sAction);
-                        self.onVolver();
-                      }
-                    });
+                */
+                  var that = this;
+                  var objAux = {};
+                  sap.m.MessageBox.confirm(
+                      "¿Está seguro de que desea proceder con la validación del registro?",
+                      {
+                          title: "Confirmar validación",
+                          actions: [
+                              "Validar",
+                              sap.m.MessageBox.Action.CANCEL
+                          ],
+                          emphasizedAction: "Validar",
+                          onClose: function (sAction) {
+                              if (sAction === "Validar") {
+                                var url_data = "./backend_mov/odata/v4/service/zbusiness/MovimientosDiarios/" + idMovim
+                                objAux.status = "1";
+                                var jsonObject = JSON.stringify(objAux);
+                                var self = that;
+                                var aData2 = jQuery.ajax({
+                                  type: "PATCH",
+                                  cache: false,
+                                  contentType: "application/json",
+                                  url: url_data,
+                                  dataType: "json",
+                                  async: false,
+                                  data: jsonObject,
+                                  success: function (data, textStatus, jqXHR) {
+                                    //oGlobalBusyDialog.close();
+                                    MessageBox.information("Se ha validado correctamente.", {
+                                      actions: ["Aceptar"],
+                                      emphasizedAction: "Aceptar",
+                                      onClose: function (sAction) {
+                                        //MessageToast.show("Action selected: " + sAction);
+                                        self.onVolver();
+                                      }
+                                    });
+                                  },
+                                  error: function (xhr, readyState) {
+                                    //oGlobalBusyDialog.close();
+                                    MessageBox.error("no se pudo realizar la validacion de registro");
+                                  },
+                                });
+                              }
 
-          
-                    
-                  },
-                  error: function (xhr, readyState) {
-                    //oGlobalBusyDialog.close();
-                    MessageBox.error("no se pudo realizar la validacion de registro");
-                  },
-                });
+                          }
+                      }
+                  );               
+
                
               },
       
@@ -254,7 +363,12 @@ sap.ui.define([
                 descripcionRubro: listaMovDiarios[0].descripcionRubro,
                 descipcionAfluencia: listaMovDiarios[0].descipcionAfluencia,
                 descripcionTemporada: listaMovDiarios[0].descripcionTemporada,
-                descripcionCompetencia: listaMovDiarios[0].descripcionCompetencia
+                descripcionCompetencia: listaMovDiarios[0].descripcionCompetencia,
+                fechaRegistro: listaMovDiarios[0].fechaRegistro,
+                descripcionZona: listaMovDiarios[0].descripcionZona,
+                descripcionTPublico: listaMovDiarios[0].descripcionTPublico,
+                descripcionDistrito: listaMovDiarios[0].descripcionDistrito,
+                decripcionEstacion: listaMovDiarios[0].decripcionEstacion
               });
               //tabla.setModel(oJsonModelEstablecimiento);
               oView.setModel(oJsonModelMovDiarios, "modelView");

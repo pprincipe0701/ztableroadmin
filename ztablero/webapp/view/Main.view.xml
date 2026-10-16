@@ -101,6 +101,15 @@
 					items="{modelMovDiario>/listaMovDiarios}"
 					itemPress="onRowPress"
 				>
+				     <headerToolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer />
+							<Button
+								icon="sap-icon://excel-attachment"
+								text="Exportar a Excel"
+								press=".onExportarExcel" />
+						</OverflowToolbar>
+					</headerToolbar>
 					<columns>
 						<Column id="colDistrito" minScreenWidth="Tablet" demandPopin="true" width="auto">
 							<Text id="colDistritoItem" text="Distrito"/>
@@ -131,7 +140,7 @@
 							<Text id="colStadoItem" text="Estado"/>
 						</Column>							
 						<Column id="colValidacion" minScreenWidth="Tablet" demandPopin="true">
-							<Text id="colValidacionItem" text="Validación"/>
+							<Text id="colValidacionItem" text="Observacion"/>
 						</Column>							
 					</columns>
 
@@ -149,6 +158,7 @@
 								<!--<Text id="rowReferenciaItem" text="{modelMovDiario>coordenada}" />-->
 								<!--<ObjectStatus id="oStatus" text="{modelMovDiario>status}" icon="{path: 'modelMovDiario>status', formatter: '.formatValueToIcon'}" />-->
 								<ObjectStatus id="oStatus" icon="{path: 'modelMovDiario>status', formatter: '.formatValueToIcon'}" />
+								<Button id="rowBtnObs" icon="sap-icon://comment" tooltip="Ver observación" type="Transparent" press=".onVerObservacion"/>
 									<!--text="{= ${/oView/status} ? 'green' : 'red' }"-->
 								<!--<Text id="rowStadoItem" text="{modelMovDiario>status}" />-->
 								<!--<Switch id="swValidacion" state="{path: 'modelMovDiario>status', formatter: '.convertToNumber'}" change="onSwitchChange" />-->

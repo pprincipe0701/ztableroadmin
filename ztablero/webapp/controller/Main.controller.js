@@ -1,11 +1,12 @@
 sap.ui.define([
   "sap/ui/core/mvc/Controller",
-  "sap/m/MessageBox"
+  "sap/m/MessageBox",
+  "sap/ui/export/Spreadsheet"
 ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller,MessageBox) {
+  function (Controller,MessageBox,Spreadsheet) {
     "use strict";
     var latitud;
     var longitud;
@@ -34,8 +35,9 @@ sap.ui.define([
 
         var oModel = new sap.ui.model.json.JSONModel({
           opciones: [
+            { idVal: "0", texto: "Pendiente" },
             { idVal: "1", texto: "Validado" },
-            { idVal: "0", texto: "No Validado" }
+            { idVal: "2", texto: "Observado" }
           ]
         });
         var oComboBox = this.getView().byId("cbxStatus");
@@ -123,22 +125,36 @@ sap.ui.define([
         var fechaInicio = dateFormat.format(selectedDateIni);
         var fechaFinal = dateFormat.format(selectedDateFinal);
 
-            if (selectedKeyzona) {
-              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + " and idMasterZona eq " + selectedKeyzona + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
-              
-            }else if (idDistrito) {
-              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idDistrito eq " + idDistrito + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
-              
-            }else if(selectedKeyusuario){
-              url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=idUsuario eq " + selectedKeyusuario + "  and fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
-              
-            } else {
-              if (selectedDateIni && selectedDateFinal) {
-                url_data1 = "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom?$filter=fechaRegistro ge " + fechaInicio + " and fechaRegistro lt " + fechaFinal;
-            
-                };
-            }
-            this.cargaDatosaModelo(url_data1);
+        var cbxState = this.getView().byId("cbxStatus");
+        var stateReg = cbxState.getSelectedKey();
+        var aFiltros = [];
+        if (idDistrito !== undefined && idDistrito !== null && idDistrito !== "") {
+            aFiltros.push("idDistrito eq " + idDistrito);
+        }
+        if (selectedKeyzona !== undefined && selectedKeyzona !== null && selectedKeyzona !== "") {
+            aFiltros.push("idMasterZona eq " + selectedKeyzona);
+        }
+        if (selectedKeyusuario !== undefined && selectedKeyusuario !== null && selectedKeyusuario !== "") {
+            aFiltros.push("idUsuario eq " + selectedKeyusuario);
+        }
+        if (selectedDateIni && selectedDateFinal) {
+            aFiltros.push(
+                "fechaRegistro ge " + fechaInicio +
+                " and fechaRegistro lt " + fechaFinal
+            );
+        }
+        if (stateReg !== undefined && stateReg !== null && stateReg !== "") {
+            aFiltros.push("status eq " + stateReg);
+        }
+        var url_data1 =
+            "./backend_mov/odata/v4/service/zbusiness/MovimientoDiarioCustom";
+        if (aFiltros.length > 0) {
+            url_data1 += "?$filter=" + encodeURIComponent(
+                aFiltros.join(" and ")
+            );
+        }
+        this.cargaDatosaModelo(url_data1);
+
       },
       selectStatus: function(oEvent){
         var oView = this.getView();
@@ -213,12 +229,18 @@ sap.ui.define([
       },
       formatValueToIcon: function (sId,oContext) {
 
-
-     if (sId === "1") {
-          return "sap-icon://accept";
-        } else {
-          return "sap-icon://cancel";
+        switch(sId){
+          case "0":
+            return "sap-icon://pending";
+            break
+          case "1":
+            return "sap-icon://accept";
+            break
+          case "2":
+            return "sap-icon://cancel";
+            break
         }
+
 
       },
       convertToNumber: function (sId,oContext) {
@@ -448,6 +470,72 @@ sap.ui.define([
           },
         });
        
+      },
+      
+      onExportarExcel: function () {
+          var oModel = this.getView().getModel("modelMovDiario");
+          var aDatos = oModel.getProperty("/listaMovDiarios");
+          if (!aDatos || aDatos.length === 0) {
+              sap.m.MessageToast.show("No hay datos para exportar.");
+              return;
+          }
+          var aColumnas = [
+            //En construccion!!!
+              {
+                  label: "Distrito",
+                  property: "idDistrito",
+                  type: "string"
+              },
+              {
+                  label: "Zona",
+                  property: "idMasterZona",
+                  type: "string"
+              },
+              {
+                  label: "Usuario",
+                  property: "idUsuario",
+                  type: "string"
+              },
+              {
+                  label: "Fecha de registro",
+                  property: "fechaRegistro",
+                  type: "string"
+              },
+              {
+                  label: "Estado",
+                  property: "status",
+                  type: "string"
+              },
+              {
+                  label: "Observación",
+                  property: "Observacion",
+                  type: "string"
+              }
+          ];
+          var oSettings = {
+              workbook: {
+                  columns: aColumnas
+              },
+              dataSource: aDatos,
+              fileName: "MovimientosDiarios.xlsx"
+          };
+          var oSpreadsheet = new sap.ui.export.Spreadsheet(oSettings);
+          oSpreadsheet.build()
+              .then(function () {
+                  sap.m.MessageToast.show(
+                      "Exportación realizada correctamente."
+                  );
+              })
+              .catch(function (oError) {
+                  console.error("Error al exportar Excel:", oError);
+                  sap.m.MessageBox.error(
+                      "No se pudo generar el archivo Excel."
+                  );
+              })
+              .finally(function () {
+                  oSpreadsheet.destroy();
+              });
       }
+
     });
   });
